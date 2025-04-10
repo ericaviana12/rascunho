@@ -1,0 +1,21 @@
+rascunho/
+├── index.html                # Tela inicial com os livros
+├── livro.html                # Tela de edição de um livro
+├── configuracoes.html        # Fonte, tema, backup, etc.
+├── css/
+│   └── style.css             # Estilo geral do app
+├── js/
+│   ├── app.js                # Lógica principal (roteamento, UI)
+│   ├── db.js                 # Lógica de armazenamento local
+│   ├── livro.js              # Criação e edição de livros
+│   ├── pdf.js                # Geração de PDF
+│   └── config.js             # Configurações e personalização
+├── data/
+│   └── backups/              # Arquivos de backup manual/local
+├── assets/
+│   ├── icons/                # Ícone do app e favicon
+│   │   └── icon.png
+│   └── fonts/                # Fontes customizadas
+├── manifest.json            # Manifesto PWA
+├── service-worker.js        # Cache offline do PWA
+└── README.md                # Documentação do projeto
