@@ -42,20 +42,16 @@ function gerarPDF(livro) {
   
     let conteudo = `<html><head><meta charset="utf-8">${estilo}</head><body>`;
   
-    // Página de capa
     conteudo += `<div class="pagina"><img src="${livro.capa}" class="capa"><h1>${livro.titulo}</h1></div>`;
   
-    // Dedicatória
     if (livro.dedicatoria) {
       conteudo += `<div class="pagina"><div class="secao"><h2>Dedicatória</h2><p>${livro.dedicatoria}</p></div></div>`;
     }
   
-    // Prefácio
     if (livro.prefacio) {
       conteudo += `<div class="pagina"><div class="secao"><h2>Prefácio</h2><p>${livro.prefacio}</p></div></div>`;
     }
   
-    // Sumário (automático)
     if (livro.capitulos && livro.capitulos.length) {
       conteudo += `<div class="pagina sumario"><h2>Sumário</h2><ul>`;
       livro.capitulos.forEach((cap, i) => {
@@ -64,7 +60,6 @@ function gerarPDF(livro) {
       conteudo += `</ul></div>`;
     }
   
-    // Capítulos
     livro.capitulos.forEach((cap, i) => {
       conteudo += `<div class="pagina"><div class="secao"><h2>${cap.titulo}</h2>${cap.conteudo}</div></div>`;
     });

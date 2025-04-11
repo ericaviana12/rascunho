@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <article class="livro">
         <h1 class="titulo">${livro.titulo}</h1>
         <img src="${livro.capa}" alt="Capa do livro" class="capa">
-        
+  
         <section class="dedicacao">
           <h2>Dedicação</h2>
           <div>${livro.dedicacao}</div>
