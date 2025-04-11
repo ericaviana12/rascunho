@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editor de Livro</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1 id="livro-titulo">Editor</h1>
+    <progress id="barra-progresso" value="0" max="100"></progress>
+  </header>
+
+  <section id="editor">
+    <form id="form-livro">
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" required />
+
+      <label for="capa">Capa do Livro:</label>
+      <input type="file" id="capa" accept="image/*" required />
+
+      <label for="dedicatoria">Dedicatória:</label>
+      <textarea id="dedicatoria"></textarea>
+
+      <label for="prefacio">Prefácio:</label>
+      <textarea id="prefacio"></textarea>
+
+      <label for="sumario">Sumário (gerado automaticamente):</label>
+      <textarea id="sumario" disabled></textarea>
+
+      <div id="capitulos-container"></div>
+
+      <button type="button" onclick="adicionarCapitulo()">Adicionar Capítulo</button>
+      <button type="submit">Salvar Livro</button>
+    </form>
+  </section>
+
+  <footer>
+    <button onclick="voltar()">Voltar</button>
+  </footer>
+
+  <script src="js/editor.js"></script>
+</body>
+</html>
