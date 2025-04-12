@@ -47,7 +47,42 @@ function excluirLivro(id) {
 function exportarPDF(id) {
   const livro = livros.find(l => l.id === id);
   if (!livro) return;
-  alert(`Exportar "${livro.titulo}" em PDF — funcionalidade a implementar`);
+
+  const janela = window.open('', '_blank');
+  janela.document.write(`
+    <html>
+      <head>
+        <title>${livro.titulo}</title>
+        <style>
+          body { font-family: ${getPreferencias().fonte}; font-size: ${getPreferencias().tamanho}px; color: ${getPreferencias().cor}; margin: 40px; }
+          h1, h2 { text-align: center; }
+          .capitulo { page-break-before: always; }
+          .capa { text-align: center; margin-bottom: 20px; }
+          .capa img { max-height: 300px; max-width: 100%; }
+        </style>
+      </head>
+      <body>
+        <div class="capa">
+          ${livro.capa ? `<img src="${livro.capa}" alt="Capa do livro">` : ''}
+        </div>
+        <h1>${livro.titulo}</h1>
+        ${livro.dedicatoria ? `<h3>Dedicatória</h3><p>${livro.dedicatoria}</p>` : ''}
+        <h2>Sumário</h2>
+        <ul>
+          ${livro.capitulos.map((c, i) => `<li>Capítulo ${i + 1}: ${c.titulo}</li>`).join('')}
+        </ul>
+        ${livro.capitulos.map((c, i) => `
+          <div class="capitulo">
+            <h2>Capítulo ${i + 1}: ${c.titulo}</h2>
+            <p>${c.texto.replace(/\n/g, '<br>')}</p>
+          </div>
+        `).join('')}
+      </body>
+    </html>
+  `);
+  janela.document.close();
+  janela.focus();
+  janela.print();
 }
 
 // LIVRO.HTML
