@@ -1,33 +1,44 @@
-# Rascunho - Editor de Livros Pessoais
+# EscritorApp ✍️
 
-Rascunho é um editor de livros pessoais que permite a criação, edição e exportação de livros em formato PDF. O app permite que o autor personalize o conteúdo de seus livros, incluindo a capa, dedicatória, prefácio, capítulos e estilos de formatação. Além disso, o livro pode ser salvo localmente e acessado offline, além de ser possível a exportação para PDF.
+Aplicativo PWA offline para escritores amadores criarem, editarem, personalizarem e exportarem livros com visual realista e responsivo.
 
 ## Funcionalidades
 
-- **Editor de Livro**: Criação e edição do conteúdo do livro com formatação customizável.
-- **Sumário Automático**: O sumário é gerado automaticamente com base nos capítulos.
-- **Barra de Progresso**: Acompanha o progresso da escrita do livro.
-- **Exportação para PDF**: O livro pode ser exportado para PDF com a formatação escolhida.
-- **Leitura do Livro**: Visualização do livro com layout final.
-- **Salvamento Offline**: Todos os livros criados podem ser salvos localmente e acessados offline.
+- 📚 Criar e organizar livros com capa, dedicatória, capítulos e formatação personalizada.
+- 🎨 Personalizar fonte, tamanho e cor do texto.
+- 📤 Exportação do livro em PDF (em breve).
+- 🧾 Sumário automático (não clicável).
+- 🖼️ Upload de capa compacta.
+- 📱 Layout responsivo usando Bootstrap offline.
+- 🔒 100% offline (exceto download inicial do Bootstrap).
 
-## Estrutura do Projeto
+## Estrutura
 
-- **index.html**: Tela principal com a lista de livros.
-- **editor.html**: Editor do livro (com sumário, capítulos, estilos e barra de progresso).
-- **leitura.html**: Visualização do livro com layout final.
-- **css/style.css**: Arquivo de estilos do app.
-- **js/app.js**: Lógica principal do app.
-- **js/editor.js**: Lógica do editor de livros.
-- **js/leitura.js**: Lógica para exibir o livro na leitura.
-- **js/db.js**: Gerenciamento do armazenamento local dos dados.
-- **js/progresso.js**: Lógica da barra de progresso da escrita.
-- **data/livros/**: Armazena os dados dos livros criados.
-- **assets/icons/**: Ícones do app.
-- **assets/capas/**: Capas dos livros carregadas pelo usuário.
-- **manifest.json**: Manifesto PWA.
-- **service-worker.js**: Service worker para funcionalidade offline.
+Veja a estrutura do projeto no Notion ou repositório. Para rodar, basta abrir `index.html` em navegador.
 
 ## Autoria
 
-Projeto desenvolvido por Erica Viana
+Criado por Erica Viana
+
+---
+
+# EscritorApp ✍️
+
+Aplicativo PWA offline para escritores criarem, editarem, personalizarem e exportarem livros com visual realista e responsivo.
+
+## Funcionalidades
+
+- 📚 Criar livros com capa, dedicatória, capítulos e formatação personalizada
+- 🎨 Personalizar fonte, tamanho e cor (somente fontes locais)
+- 📤 Exportação do livro em PDF mantendo layout e formatação
+- 📱 Layout bonito e responsivo com Bootstrap offline
+- 📲 Funciona 100% offline com Service Worker (PWA)
+
+## Como usar
+
+1. Baixe o projeto e abra o `index.html` em um navegador.
+2. Adicione livros, personalize e exporte para PDF quando quiser.
+3. Para funcionar como PWA, hospede localmente ou use via servidor local.
+
+## Estrutura básica
+

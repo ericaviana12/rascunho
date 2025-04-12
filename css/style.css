@@ -1,0 +1,29 @@
+body {
+    background-color: #fefefe;
+    font-family: sans-serif;
+    color: #333;
+  }
+  
+  h1, h3 {
+    font-weight: bold;
+  }
+  
+  #livros-container .card {
+    margin-bottom: 20px;
+  }
+  
+  #capitulos-container .capitulo {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #fafafa;
+  }
+  
+  img.capa-preview {
+    max-width: 200px;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 4px;
+  }
+  

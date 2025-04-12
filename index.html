@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus Livros</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">Meus Livros</h1>
+    <div id="livros-container" class="row"></div>
+    <button class="btn btn-primary mt-4" onclick="criarNovoLivro()">Adicionar Novo Livro</button>
+  </div>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').then(() =>
+        console.log('Service Worker registrado com sucesso!')
+      ).catch(err =>
+        console.log('Erro ao registrar Service Worker:', err)
+      );
+    }
+  </script>  
+</body>
+</html>
