@@ -1,157 +1,169 @@
-let livros = JSON.parse(localStorage.getItem('livros') || '[]');
-
-// INDEX
-function criarNovoLivro() {
-  const novo = {
-    id: Date.now(),
-    titulo: 'Novo Livro',
-    dedicatoria: '',
-    capa: '',
-    capitulos: []
-  };
-  livros.push(novo);
-  localStorage.setItem('livros', JSON.stringify(livros));
-  window.location.href = `livro.html?id=${novo.id}`;
-}
-
+// Função para carregar livros salvos
 function carregarLivros() {
-  const container = document.getElementById('livros-container');
-  if (!container) return;
-  container.innerHTML = '';
+  const listaLivros = document.getElementById('lista-livros');
+  if (!listaLivros) return;
 
-  livros.forEach(livro => {
+  listaLivros.innerHTML = '';
+  const livros = JSON.parse(localStorage.getItem('livros') || '[]');
+
+  livros.forEach((livro, index) => {
     const card = document.createElement('div');
     card.className = 'col-md-4';
     card.innerHTML = `
       <div class="card h-100">
-        ${livro.capa ? `<img src="${livro.capa}" class="card-img-top" alt="Capa do Livro">` : ''}
+        <img src="${livro.capa}" class="card-img-top capa-preview" alt="Capa do livro">
         <div class="card-body">
           <h5 class="card-title">${livro.titulo}</h5>
-          <a href="livro.html?id=${livro.id}" class="btn btn-primary btn-sm">Editar</a>
-          <button class="btn btn-danger btn-sm" onclick="excluirLivro(${livro.id})">Excluir</button>
-          <button class="btn btn-secondary btn-sm" onclick="exportarPDF(${livro.id})">Exportar PDF</button>
+          <p class="card-text">${livro.dedicatoria || ''}</p>
+          <a href="livro.html?id=${index}" class="btn btn-primary btn-sm mb-1">Editar</a>
+          <button onclick="excluirLivro(${index})" class="btn btn-danger btn-sm mb-1">Excluir</button>
+          <button onclick="exportarLivro(${index})" class="btn btn-success btn-sm">Exportar PDF</button>
         </div>
       </div>
     `;
-    container.appendChild(card);
+    listaLivros.appendChild(card);
   });
 }
 
-function excluirLivro(id) {
-  if (!confirm('Deseja excluir este livro?')) return;
-  livros = livros.filter(l => l.id !== id);
-  localStorage.setItem('livros', JSON.stringify(livros));
-  carregarLivros();
+// Função para adicionar novos capítulos
+function adicionarCapitulo(titulo = '', texto = '') {
+  const capitulos = document.getElementById('capitulos');
+  const index = capitulos.querySelectorAll('.capitulo').length;
+
+  const div = document.createElement('div');
+  div.className = 'mb-3 capitulo';
+  div.innerHTML = `
+    <label class="form-label">Título do Capítulo</label>
+    <input type="text" class="form-control titulo-capitulo" value="${titulo}">
+    <label class="form-label mt-2">Texto</label>
+    <textarea class="form-control texto-capitulo" rows="4">${texto}</textarea>
+    <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removerCapitulo(this)">Remover Capítulo</button>
+    <hr>
+  `;
+  capitulos.appendChild(div);
 }
 
-function exportarPDF(id) {
-  const livro = livros.find(l => l.id === id);
+// Função para remover um capítulo
+function removerCapitulo(botao) {
+  botao.parentElement.remove();
+}
+
+// Função para salvar livro
+function salvarLivro() {
+  const id = document.getElementById('livro-id').value;
+  const titulo = document.getElementById('titulo').value.trim();
+  const dedicatoria = document.getElementById('dedicatoria').value.trim();
+  const capaInput = document.getElementById('capa');
+  const capitulosElements = document.querySelectorAll('.capitulo');
+
+  if (!titulo) {
+    alert('Título é obrigatório!');
+    return;
+  }
+
+  let capaBase64 = '';
+  const livros = JSON.parse(localStorage.getItem('livros') || '[]');
+
+  function salvar(capaData) {
+    const novoLivro = {
+      titulo,
+      dedicatoria,
+      capa: capaData || (livros[id] && livros[id].capa),
+      capitulos: Array.from(capitulosElements).map(c => ({
+        titulo: c.querySelector('.titulo-capitulo').value,
+        texto: c.querySelector('.texto-capitulo').value
+      }))
+    };
+
+    if (id) {
+      livros[id] = novoLivro;
+    } else {
+      livros.push(novoLivro);
+    }
+
+    localStorage.setItem('livros', JSON.stringify(livros));
+    window.location.href = 'painel.html';
+  }
+
+  if (capaInput.files.length > 0) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      capaBase64 = e.target.result;
+      salvar(capaBase64);
+    };
+    reader.readAsDataURL(capaInput.files[0]);
+  } else {
+    salvar();
+  }
+}
+
+// Função para excluir livro
+function excluirLivro(index) {
+  if (confirm('Deseja excluir este livro?')) {
+    const livros = JSON.parse(localStorage.getItem('livros') || '[]');
+    livros.splice(index, 1);
+    localStorage.setItem('livros', JSON.stringify(livros));
+    carregarLivros();
+  }
+}
+
+// Função para exportar livro como PDF
+function exportarLivro(index) {
+  const livros = JSON.parse(localStorage.getItem('livros') || '[]');
+  const livro = livros[index];
+
   if (!livro) return;
 
   const janela = window.open('', '_blank');
   janela.document.write(`
     <html>
-      <head>
-        <title>${livro.titulo}</title>
-        <style>
-          body { font-family: ${getPreferencias().fonte}; font-size: ${getPreferencias().tamanho}px; color: ${getPreferencias().cor}; margin: 40px; }
-          h1, h2 { text-align: center; }
-          .capitulo { page-break-before: always; }
-          .capa { text-align: center; margin-bottom: 20px; }
-          .capa img { max-height: 300px; max-width: 100%; }
-        </style>
-      </head>
-      <body>
-        <div class="capa">
-          ${livro.capa ? `<img src="${livro.capa}" alt="Capa do livro">` : ''}
+    <head>
+      <title>${livro.titulo}</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 40px; margin: 40px auto}
+        h1, h2 { text-align: center; margin: 30px auto}
+        img { max-width: 300px; display: block; margin: 20px auto; }
+        .capitulo { page-break-before: always; margin: 20px auto}
+      </style>
+    </head>
+    <body>
+      <img src="${livro.capa}" alt="Capa do livro">
+      <h1>${livro.titulo}</h1>
+      ${livro.dedicatoria ? `<p><em>${livro.dedicatoria}</em></p>` : ''}
+      <h2>Sumário</h2>
+      <ul>
+        ${livro.capitulos.map(c => `<li>${c.titulo}</li>`).join('')}
+      </ul>
+      ${livro.capitulos.map(c => `
+        <div class="capitulo">
+          <h2>${c.titulo}</h2>
+          <p>${c.texto.replace(/\n/g, '<br>')}</p>
         </div>
-        <h1>${livro.titulo}</h1>
-        ${livro.dedicatoria ? `<h3>Dedicatória</h3><p>${livro.dedicatoria}</p>` : ''}
-        <h2>Sumário</h2>
-        <ul>
-          ${livro.capitulos.map((c, i) => `<li>Capítulo ${i + 1}: ${c.titulo}</li>`).join('')}
-        </ul>
-        ${livro.capitulos.map((c, i) => `
-          <div class="capitulo">
-            <h2>Capítulo ${i + 1}: ${c.titulo}</h2>
-            <p>${c.texto.replace(/\n/g, '<br>')}</p>
-          </div>
-        `).join('')}
-      </body>
+      `).join('')}
+    </body>
     </html>
   `);
   janela.document.close();
-  janela.focus();
   janela.print();
 }
 
-// LIVRO.HTML
-const params = new URLSearchParams(window.location.search);
-const livroId = params.get('id');
-if (livroId && document.getElementById('livro-form')) {
-  const livro = livros.find(l => l.id == livroId);
+// Se for página de edição, carregar dados do livro
+window.onload = function () {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
 
-  if (livro) {
-    document.getElementById('titulo').value = livro.titulo;
-    document.getElementById('dedicatoria').value = livro.dedicatoria;
+  if (id !== null && document.getElementById('form-livro')) {
+    const livros = JSON.parse(localStorage.getItem('livros') || '[]');
+    const livro = livros[id];
 
-    const capaInput = document.getElementById('capa');
-    capaInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        livro.capa = reader.result;
-      };
-      reader.readAsDataURL(file);
-    });
-
-    livro.capitulos.forEach((c, i) => adicionarCapitulo(c.titulo, c.texto, i));
-
-    document.getElementById('livro-form').addEventListener('submit', e => {
-      e.preventDefault();
-      livro.titulo = document.getElementById('titulo').value;
-      livro.dedicatoria = document.getElementById('dedicatoria').value;
-      livro.capitulos = [];
-
-      const caps = document.querySelectorAll('.capitulo');
-      caps.forEach(cap => {
-        livro.capitulos.push({
-          titulo: cap.querySelector('.cap-titulo').value,
-          texto: cap.querySelector('.cap-texto').value
-        });
-      });
-
-      const idx = livros.findIndex(l => l.id == livroId);
-      livros[idx] = livro;
-      localStorage.setItem('livros', JSON.stringify(livros));
-      alert('Livro salvo com sucesso!');
-    });
+    if (livro) {
+      document.getElementById('livro-id').value = id;
+      document.getElementById('titulo').value = livro.titulo;
+      document.getElementById('dedicatoria').value = livro.dedicatoria || '';
+      livro.capitulos.forEach(c => adicionarCapitulo(c.titulo, c.texto));
+    }
+    document.getElementById('titulo-pagina').innerText = 'Editar Livro';
   }
-}
 
-function adicionarCapitulo(titulo = '', texto = '', i = Date.now()) {
-  const container = document.getElementById('capitulos-container');
-  const div = document.createElement('div');
-  div.className = 'capitulo';
-  div.innerHTML = `
-    <input type="text" class="form-control cap-titulo mb-2" placeholder="Título do capítulo" value="${titulo}" />
-    <textarea class="form-control cap-texto mb-2" rows="5" placeholder="Texto do capítulo">${texto}</textarea>
-    <button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.remove()">Remover Capítulo</button>
-  `;
-  container.appendChild(div);
-}
-
-// CONFIGURAÇÕES
-const configForm = document.getElementById('config-form');
-if (configForm) {
-  configForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const prefs = {
-      fonte: document.getElementById('fonte').value,
-      tamanho: document.getElementById('tamanho').value,
-      cor: document.getElementById('corTexto').value
-    };
-    localStorage.setItem('preferencias', JSON.stringify(prefs));
-    alert('Configurações salvas!');
-  });
+  carregarLivros();
 }
