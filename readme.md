@@ -8,7 +8,6 @@
 
 - 📚 **Organização de Livros**: Crie, edite e organize seus livros pessoais, adicionando capa, título, dedicatória e capítulos.
 - ✍️ **Edição de Texto**: Escreva e edite suas histórias com recursos simples de formatação.
-- 💾 **Salvamento Automático e Manual**: Garanta que seu progresso seja salvo automaticamente, com a opção de salvamento manual.
 - 📄 **Exportação em PDF**: Exporte seus livros e capítulos para PDF com um simples clique.
 - 📱 **Layout Responsivo e PWA**: A aplicação possui um design responsivo que funciona bem em dispositivos móveis, além de ser uma PWA, ou seja, pode ser instalada e utilizada offline.
 
