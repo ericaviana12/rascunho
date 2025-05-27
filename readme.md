@@ -1,4 +1,4 @@
-# 📝 Rascunho - Editor de Livros Pessoais
+# 📝 Rascunho - Editor de livros pessoais
 
 **Rascunho** é um editor de livros pessoais desenvolvido para escritores amadores. O aplicativo permite que os usuários criem, editem, exportem e gerenciem seus livros. Com uma interface simples e intuitiva, o projeto visa proporcionar uma experiência completa de escrita, desde a organização dos livros até a exportação em formato PDF. Pode ser utilizado online ou offline, através do PWA.
 
